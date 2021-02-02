@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">home_assignment_widgets</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="get_rates">Get Rates</string>
+    <string name="get_crypto_rates">Get Crypto Rates</string>
+</resources>
