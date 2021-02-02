@@ -50,6 +50,7 @@ public class ConfigRatesWidgetActivity extends AppCompatActivity {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         Intent intent = new Intent(this,MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
+
         String bitcoin =String.valueOf(txtBitcoin.getText());
         String cro =String.valueOf(txtCRO.getText());
         String eth =String.valueOf(txtEtherium.getText());
@@ -68,7 +69,7 @@ public class ConfigRatesWidgetActivity extends AppCompatActivity {
         editor.putString(PREF_MOB+widgetId, mob);
         editor.apply();
 
-        Intent result = new Intent();
+        Intent result = new Intent( );
         result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,widgetId);
         setResult(RESULT_OK, result);
         finish();

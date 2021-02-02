@@ -17,7 +17,7 @@ import static com.example.home_assignment_widgets.ConfigRatesWidgetActivity.SHAR
 /**
  * Implementation of App Widget functionality.
  */
-public class CryptoRatesApp extends AppWidgetProvider {
+public class WidgetProvider extends AppWidgetProvider {
 
     public static String mob;
     public static int bitcoin,eth,cro;
@@ -37,7 +37,7 @@ public class CryptoRatesApp extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.crypto_widget);
 
         //call intent when widget is clicked
-        views.setOnClickPendingIntent(R.id.widget_background,pendingIntent);
+        views.setOnClickPendingIntent(R.id.imageCrypto,pendingIntent);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
