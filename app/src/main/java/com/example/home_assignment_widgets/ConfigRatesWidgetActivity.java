@@ -69,7 +69,7 @@ public class ConfigRatesWidgetActivity extends AppCompatActivity {
         editor.putString(PREF_MOB+widgetId, mob);
         editor.apply();
 
-        Intent result = new Intent( );
+        Intent result = new Intent();
         result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,widgetId);
         setResult(RESULT_OK, result);
         finish();

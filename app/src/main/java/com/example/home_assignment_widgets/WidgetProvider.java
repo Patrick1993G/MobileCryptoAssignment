@@ -35,7 +35,6 @@ public class WidgetProvider extends AppWidgetProvider {
         cro = Integer.parseInt(sharedPreferences.getString(PREF_CRO+appWidgetId, "0"));
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.crypto_widget);
-
         //call intent when widget is clicked
         views.setOnClickPendingIntent(R.id.imageCrypto,pendingIntent);
         // Instruct the widget manager to update the widget
