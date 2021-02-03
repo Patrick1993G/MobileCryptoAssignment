@@ -2,6 +2,8 @@ package com.example.home_assignment_widgets;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -10,6 +12,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.example.home_assignment_widgets.ConfigRatesWidgetActivity.PREF_BITCOIN;
+import static com.example.home_assignment_widgets.ConfigRatesWidgetActivity.SHARE_PREFS;
+import static com.example.home_assignment_widgets.WidgetProvider.VALUE_CRYPTO;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,54 +25,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String url = "https://api.crypto.com/v2/public/get-trades";
-        new MainAsync().execute(url);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARE_PREFS, Context.MODE_PRIVATE);
+        String crypto =sharedPreferences.getString(VALUE_CRYPTO, "[]");
+        List<CryptoObject> cryptoList= new ArrayList<CryptoObject>();
+
     }
-    protected class MainAsync extends AsyncTask<String, Void, String> {
-        /*ArrayList containing strings written in JSON format*/
-        ArrayList<CryptoObject> cryptoList = new ArrayList<>();
-        ArrayList<CryptoObject> myCrypto = new ArrayList<>();
 
-        @Override
-        /*This method retrieves the data from the internet*/
-        protected String doInBackground(String... url) {
-            try {
-                /*Getting data from the internet*/
-                String json = Connection.getData(url[0]);
-                JSONObject object = new JSONObject(json);
-                JSONObject result = object.getJSONObject("result");
-                JSONArray search = (JSONArray) result.toJSONArray(result.names()).get(0);
-
-                for (int i = 0; i < search.length(); i++) {
-
-                    JSONObject o = search.getJSONObject(i);
-                    //get the title and price
-                    String title = o.getString("i");
-                    String price = o.getString("p");
-                    //create an object and add to list
-                    CryptoObject crypto = new CryptoObject(title, price);
-                    this.cryptoList.add(crypto);
-                }
-                //filter results
-                for (int i = 0; i < cryptoList.size(); i++) {
-                    if (i < 3) {
-                        String title = cryptoList.get(i).getTitle();
-                        if (title.equals("BTC_USDT") || title.equals("CRO_USDT") || title.equals("ETH_USDT")) {
-                            myCrypto.add(cryptoList.get(i));
-                        }
-                    }
-                }
-            } catch (JSONException ex) {
-                ex.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            /*Required data retrieved from doInBackground are displayed in their respective
-             * text views*/
-        }
-    }
 }
