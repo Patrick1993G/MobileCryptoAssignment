@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.TextView;
@@ -42,8 +43,39 @@ public class WidgetProvider extends AppWidgetProvider {
         cro = Integer.parseInt(sharedPreferences.getString(PREF_CRO, "0"));
 
     }
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+        RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.crypto_widget);
+
+        WidgetResize(newOptions, view);
+    }
+
+    private  void WidgetResize(Bundle newOptions, RemoteViews view) {
+        int minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+        int maxHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
+        int minWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+        int maxWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
+
+        if(maxWidth > 100){
+            view.setViewVisibility(R.id.txtWidgetBitcoin, View.VISIBLE);
+            view.setViewVisibility(R.id.txtWidgetEth, View.VISIBLE);
+            view.setViewVisibility(R.id.txtWidgetCro, View.VISIBLE);
+            view.setViewVisibility(R.id.textViewBitcoin, View.VISIBLE);
+            view.setViewVisibility(R.id.textViewCro, View.VISIBLE);
+            view.setViewVisibility(R.id.textViewEth, View.VISIBLE);
+        }else{
+            view.setViewVisibility(R.id.txtWidgetBitcoin, View.GONE);
+            view.setViewVisibility(R.id.txtWidgetEth, View.GONE);
+            view.setViewVisibility(R.id.txtWidgetCro, View.GONE);
+            view.setViewVisibility(R.id.textViewBitcoin, View.GONE);
+            view.setViewVisibility(R.id.textViewCro, View.GONE);
+            view.setViewVisibility(R.id.textViewEth, View.GONE);
+        }
+    }
+
+    void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                         int appWidgetId) {
         //set intent
         Intent intent = new Intent(context,MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,0);
@@ -53,7 +85,38 @@ public class WidgetProvider extends AppWidgetProvider {
         new MainAsync().execute(url);
         // Construct the RemoteViews object
         views = new RemoteViews(context.getPackageName(), R.layout.crypto_widget);
-
+        //get bundle
+        Bundle widgetOptions = appWidgetManager.getAppWidgetOptions(appWidgetId);
+        //resize Widget
+        WidgetResize(widgetOptions, views);
+        //get values
+        String crypto =sharedPreferences.getString(VALUE_CRYPTO, "[]");
+        List<CryptoObject> cryptoList = HelperClass.GetListFromJson(crypto);
+        //update values in widget
+        if(!cryptoList.isEmpty()){
+            for (CryptoObject c: cryptoList )
+            {
+                if(c.getTitle().equals("BTC_USDT")){
+                    views.setCharSequence(R.id.txtWidgetBitcoin,"setText",c.getPrice());
+                    //check user's limit
+                    if(bitcoin >= Integer.parseInt(c.getPrice())){
+                        //show notification
+                    }
+                }else if (c.getTitle().equals("CRO_USDT")){
+                    views.setCharSequence(R.id.txtWidgetCro,"setText",c.getPrice());
+                    //check user's limit
+                    if(cro >= Integer.parseInt(c.getPrice())){
+                        //show notification
+                    }
+                }else if(c.getTitle().equals("ETH_USDT")){
+                    views.setCharSequence(R.id.txtWidgetEth,"setText",c.getPrice());
+                    //check user's limit
+                    if(eth >= Integer.parseInt(c.getPrice())){
+                        //show notification
+                    }
+                }
+            }
+        }
         //call intent when widget is clicked
         views.setOnClickPendingIntent(R.id.imageCryptoBtn,pendingIntent);
         // Instruct the widget manager to update the widget
@@ -65,10 +128,10 @@ public class WidgetProvider extends AppWidgetProvider {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
-
         }
         //get the users preferences
         updatePreferences();
+
     }
 
     @Override
@@ -126,34 +189,7 @@ public class WidgetProvider extends AppWidgetProvider {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(VALUE_CRYPTO,cryptoDetails);
             editor.apply();
-            //get values
-            String crypto =sharedPreferences.getString(VALUE_CRYPTO, "[]");
-            List<CryptoObject> cryptoList=HelperClass.GetListFromJson(crypto);
-            //update values in widget
-            if(!cryptoList.isEmpty()){
-                for (CryptoObject c: cryptoList )
-                {
-                    if(c.getTitle().equals("BTC_USDT")){
-                        views.setCharSequence(R.id.txtWidgetBitcoin,"setText",c.getPrice());
-                        //check user's limit
-                        if(bitcoin>= Integer.parseInt(c.getPrice())){
-                            //show notification
-                        }
-                    }else if (c.getTitle().equals("CRO_USDT")){
-                        views.setCharSequence(R.id.txtWidgetCro,"setText",c.getPrice());
-                        //check user's limit
-                        if(cro>= Integer.parseInt(c.getPrice())){
-                            //show notification
-                        }
-                    }else if(c.getTitle().equals("ETH_USDT")){
-                        views.setCharSequence(R.id.txtWidgetEth,"setText",c.getPrice());
-                        //check user's limit
-                        if(eth>= Integer.parseInt(c.getPrice())){
-                            //show notification
-                        }
-                    }
-                }
-            }
+
         }
     }
 }
