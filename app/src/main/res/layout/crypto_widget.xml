@@ -10,13 +10,79 @@
     android:padding="@dimen/widget_margin"
     android:theme="@style/ThemeOverlay.Home_assignment_widgets.AppWidgetContainer">
 
-    <ImageView
-        android:id="@+id/imageCrypto"
-        android:layout_width="61dp"
+    <Button
+        android:id="@+id/imageCryptoBtn"
+        android:layout_width="95dp"
+        android:layout_height="103dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="316dp"
+        android:background="#3B85DF"
+        android:text="Rates"
+        app:icon="@mipmap/ic_launcher_foreground"
+        app:iconPadding="0dp" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="-1dp"
-        android:layout_marginTop="9dp"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="21dp"
+        android:text="Bitcoin" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="54dp"
+        android:text="Etherium" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="84dp"
+        android:text="CRO" />
+
+    <TextView
+        android:id="@+id/txtWidgetBitcoin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="19dp"
+        android:text="0" />
+
+    <TextView
+        android:id="@+id/txtWidgetCro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="81dp"
+        android:text="0" />
+
+    <TextView
+        android:id="@+id/txtWidgetEth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="52dp"
+        android:text="0" />
+
 </RelativeLayout>

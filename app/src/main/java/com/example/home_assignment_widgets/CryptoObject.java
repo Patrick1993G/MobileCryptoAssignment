@@ -1,5 +1,7 @@
 package com.example.home_assignment_widgets;
 
+import com.google.gson.GsonBuilder;
+
 import java.util.Objects;
 
 public class CryptoObject {
@@ -37,11 +39,7 @@ public class CryptoObject {
 
     @Override
     public String toString() {
-        return "CryptoObject{" +
-                "title='" + title + '\'' +
-                ", price='" + price + '\'' +
-                ", id='" + id + '\'' +
-                '}';
+        return new GsonBuilder().create().toJson(this,CryptoObject.class);
     }
 
     @Override

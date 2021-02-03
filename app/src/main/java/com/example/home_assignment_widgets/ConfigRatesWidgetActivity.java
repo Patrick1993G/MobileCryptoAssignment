@@ -63,10 +63,10 @@ public class ConfigRatesWidgetActivity extends AppCompatActivity {
 
         SharedPreferences preferences = getSharedPreferences(SHARE_PREFS,MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(PREF_BITCOIN+widgetId,bitcoin);
-        editor.putString(PREF_CRO+widgetId, cro);
-        editor.putString(PREF_ETH+widgetId,eth);
-        editor.putString(PREF_MOB+widgetId, mob);
+        editor.putString(PREF_BITCOIN,bitcoin);
+        editor.putString(PREF_CRO, cro);
+        editor.putString(PREF_ETH,eth);
+        editor.putString(PREF_MOB, mob);
         editor.apply();
 
         Intent result = new Intent();

@@ -7,13 +7,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.view.View;
 import android.widget.RemoteViews;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.home_assignment_widgets.ConfigRatesWidgetActivity.PREF_BITCOIN;
 import static com.example.home_assignment_widgets.ConfigRatesWidgetActivity.PREF_CRO;
@@ -30,24 +33,29 @@ public class WidgetProvider extends AppWidgetProvider {
     public static int bitcoin,eth,cro;
     public static SharedPreferences sharedPreferences ;
     public static final String VALUE_CRYPTO= "crypto_details";
+    private static RemoteViews views = null;
+    private static void updatePreferences(){
+        //load from shared preferences
+        mob = sharedPreferences.getString(PREF_MOB,"0000000");
+        bitcoin = Integer.parseInt(sharedPreferences.getString(PREF_BITCOIN, "0"));
+        eth = Integer.parseInt(sharedPreferences.getString(PREF_ETH, "0"));
+        cro = Integer.parseInt(sharedPreferences.getString(PREF_CRO, "0"));
+
+    }
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
         //set intent
         Intent intent = new Intent(context,MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,0);
 
-        mob = sharedPreferences.getString(PREF_MOB+appWidgetId,"0000000");
-        bitcoin = Integer.parseInt(sharedPreferences.getString(PREF_BITCOIN+appWidgetId, "0"));
-        eth = Integer.parseInt(sharedPreferences.getString(PREF_ETH+appWidgetId, "0"));
-        cro = Integer.parseInt(sharedPreferences.getString(PREF_CRO+appWidgetId, "0"));
         //get the crypto details
         String url = "https://api.crypto.com/v2/public/get-trades";
         new MainAsync().execute(url);
-
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.crypto_widget);
+        views = new RemoteViews(context.getPackageName(), R.layout.crypto_widget);
+
         //call intent when widget is clicked
-        views.setOnClickPendingIntent(R.id.imageCrypto,pendingIntent);
+        views.setOnClickPendingIntent(R.id.imageCryptoBtn,pendingIntent);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
@@ -57,19 +65,17 @@ public class WidgetProvider extends AppWidgetProvider {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
+
         }
+        //get the users preferences
+        updatePreferences();
     }
 
     @Override
     public void onEnabled(Context context) {
-        //load from shared preferences
         sharedPreferences = context.getSharedPreferences(SHARE_PREFS, Context.MODE_PRIVATE);
     }
 
-    @Override
-    public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
-    }
     protected static class MainAsync extends AsyncTask<String, Void, String> {
         /*ArrayList containing strings written in JSON format*/
         ArrayList<CryptoObject> cryptoList = new ArrayList<>();
@@ -119,6 +125,35 @@ public class WidgetProvider extends AppWidgetProvider {
             String cryptoDetails = myCrypto.toString();
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(VALUE_CRYPTO,cryptoDetails);
+            editor.apply();
+            //get values
+            String crypto =sharedPreferences.getString(VALUE_CRYPTO, "[]");
+            List<CryptoObject> cryptoList=HelperClass.GetListFromJson(crypto);
+            //update values in widget
+            if(!cryptoList.isEmpty()){
+                for (CryptoObject c: cryptoList )
+                {
+                    if(c.getTitle().equals("BTC_USDT")){
+                        views.setCharSequence(R.id.txtWidgetBitcoin,"setText",c.getPrice());
+                        //check user's limit
+                        if(bitcoin>= Integer.parseInt(c.getPrice())){
+                            //show notification
+                        }
+                    }else if (c.getTitle().equals("CRO_USDT")){
+                        views.setCharSequence(R.id.txtWidgetCro,"setText",c.getPrice());
+                        //check user's limit
+                        if(cro>= Integer.parseInt(c.getPrice())){
+                            //show notification
+                        }
+                    }else if(c.getTitle().equals("ETH_USDT")){
+                        views.setCharSequence(R.id.txtWidgetEth,"setText",c.getPrice());
+                        //check user's limit
+                        if(eth>= Integer.parseInt(c.getPrice())){
+                            //show notification
+                        }
+                    }
+                }
+            }
         }
     }
 }
