@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    android:backgroundTint="#29FF03"
+    android:backgroundTint="#84FFFF"
     tools:context=".ConfigRatesWidgetActivity">
 
     <TextView
@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="18dp"
-        android:text="Set Rates"
+        android:text=" Set Rates In $"
         app:layout_constraintBottom_toTopOf="@+id/editTextBitcoin"
         app:layout_constraintStart_toStartOf="@+id/editTextBitcoin" />
 
