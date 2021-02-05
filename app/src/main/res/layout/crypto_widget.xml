@@ -33,7 +33,7 @@
         android:layout_marginStart="80dp"
         android:layout_marginTop="140dp"
         android:text="0"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:visibility="visible" />
 
     <TextView
@@ -45,7 +45,7 @@
         android:layout_marginStart="80dp"
         android:layout_marginTop="118dp"
         android:text="0"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:visibility="visible" />
 
     <TextView
@@ -57,7 +57,7 @@
         android:layout_marginStart="69dp"
         android:layout_marginTop="66dp"
         android:text="Name"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:visibility="visible" />
 
     <TextView
@@ -69,7 +69,7 @@
         android:layout_marginStart="80dp"
         android:layout_marginTop="90dp"
         android:text="0"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:visibility="visible" />
 
     <TextView
@@ -81,7 +81,7 @@
         android:layout_marginStart="7dp"
         android:layout_marginTop="117dp"
         android:text="Etherium"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:visibility="visible" />
 
     <TextView
@@ -93,7 +93,7 @@
         android:layout_marginStart="6dp"
         android:layout_marginTop="68dp"
         android:text="Country"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:visibility="visible" />
 
     <TextView
@@ -105,7 +105,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="89dp"
         android:text="Bitcoin"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:visibility="visible" />
 
     <TextView
@@ -117,7 +117,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="140dp"
         android:text="CRO"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:visibility="visible" />
 
 </RelativeLayout>
