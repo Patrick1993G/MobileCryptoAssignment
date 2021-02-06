@@ -35,11 +35,11 @@ public class CryptoObject {
         this.id = id;
     }
 
-    private String title,price, id;
+    private String title, price, id;
 
     @Override
     public String toString() {
-        return new GsonBuilder().create().toJson(this,CryptoObject.class);
+        return new GsonBuilder().create().toJson(this, CryptoObject.class);
     }
 
     @Override

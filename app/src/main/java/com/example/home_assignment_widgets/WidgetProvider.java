@@ -34,7 +34,7 @@ import static com.example.home_assignment_widgets.ConfigRatesWidgetActivity.SHAR
 
 public class WidgetProvider extends AppWidgetProvider {
 
-    public static String mob;
+    public static String mob, country;
     public static float bitcoin, eth, cro;
     public static SharedPreferences sharedPreferences;
     public static final String VALUE_CRYPTO = "crypto_details";
@@ -42,6 +42,7 @@ public class WidgetProvider extends AppWidgetProvider {
     NotificationManagerCompat notificationManagerCompat;
     public static LocationListener locationListener;
     public static RemoteViews views;
+    public static String[] url = new String[1];
 
     private static void updatePreferences(int widgetId, Context context) {
         //load from shared preferences
@@ -53,6 +54,10 @@ public class WidgetProvider extends AppWidgetProvider {
 
     }
 
+    @Override
+    public void onRestored(Context context, int[] oldWidgetIds, int[] newWidgetIds) {
+        super.onRestored(context, oldWidgetIds, newWidgetIds);
+    }
 
     public void updateWidget(Context context, AppWidgetManager appWidgetManager,
                              int appWidgetId) {
@@ -69,8 +74,10 @@ public class WidgetProvider extends AppWidgetProvider {
         sharedPreferences = context.getSharedPreferences(SHARE_PREFS, Context.MODE_PRIVATE);
         String crypto = sharedPreferences.getString(VALUE_CRYPTO, "[]");
 
-        String country = sharedPreferences.getString(VALUE_COUNTRY, "no data");
-        views.setCharSequence(R.id.txtWidgetCountry, "setText", country);
+        country = sharedPreferences.getString(VALUE_COUNTRY, "no data");
+        if (!country.equals("{}")) {
+            views.setCharSequence(R.id.txtWidgetCountry, "setText", country);
+        }
         if (!crypto.isEmpty()) {
             List<CryptoObject> cryptoList = HelperClass.GetListFromJson(crypto);
             //update values in widget & check user limit
@@ -128,7 +135,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
     public static void getLocation(Context context) {
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        final String[] url = new String[1];
+
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
@@ -154,7 +161,8 @@ public class WidgetProvider extends AppWidgetProvider {
             String json = Connection.getData(url[0]);
             try {
                 JSONObject object = new JSONObject(json);
-                country = object.getString("statename");
+                country = object.getString("country");
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }

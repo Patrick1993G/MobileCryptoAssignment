@@ -2,13 +2,10 @@ package com.example.home_assignment_widgets;
 
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.telephony.SmsManager;
-import android.widget.RemoteViews;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +20,7 @@ import androidx.core.app.NotificationManagerCompat;
 public class HelperClass {
 
     public static List GetListFromJson(String crypto) {
-        List<CryptoObject> cryptoList= new ArrayList<CryptoObject>();
+        List<CryptoObject> cryptoList = new ArrayList<CryptoObject>();
         JSONArray search = null;
         try {
             search = new JSONArray(crypto);
@@ -36,24 +33,24 @@ public class HelperClass {
                 String price = o.getString("price");
                 String id = o.getString("id");
                 //create an object and add to list
-                CryptoObject cryptoObject = new CryptoObject(title, price,id);
+                CryptoObject cryptoObject = new CryptoObject(title, price, id);
                 cryptoList.add(cryptoObject);
-            }}
-        catch (JSONException e) {
+            }
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return cryptoList;
     }
 
-    public static void generalNotification(String title, String desc, Context context, NotificationManagerCompat notificationManagerCompat,int widgetId){
-        Intent activityIntent = new Intent(context,MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(context,0,activityIntent,0);
+    public static void generalNotification(String title, String desc, Context context, NotificationManagerCompat notificationManagerCompat, int widgetId) {
+        Intent activityIntent = new Intent(context, MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
 
         Intent broadcastIntent = new Intent(context, NotificationReceiver.class);
-        broadcastIntent.putExtra("Message",desc);
-        broadcastIntent.putExtra("id",String.valueOf(widgetId));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,broadcastIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification notification = new NotificationCompat.Builder(context,Notifications.CHANNEL_GENERAL)
+        broadcastIntent.putExtra("Message", desc);
+        broadcastIntent.putExtra("id", String.valueOf(widgetId));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification notification = new NotificationCompat.Builder(context, Notifications.CHANNEL_GENERAL)
                 .setSmallIcon(R.drawable.ic_bitcoin_coin)
                 .setContentTitle(title)
                 .setContentText(desc)
@@ -61,14 +58,14 @@ public class HelperClass {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setContentIntent(contentIntent)//to go back to app
-                .addAction(R.drawable.ic_bitcoin_coin,"Message from Crypto",pendingIntent)
+                .addAction(R.drawable.ic_bitcoin_coin, "Message from Crypto", pendingIntent)
                 .build();
-        notificationManagerCompat.notify(1,notification);
+        notificationManagerCompat.notify(1, notification);
     }
 
-    public static void sendSms(String mob,String smsText){
+    public static void sendSms(String mob, String smsText) {
         SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(mob,null,smsText,null,null);
+        smsManager.sendTextMessage(mob, null, smsText, null, null);
     }
 
 }
