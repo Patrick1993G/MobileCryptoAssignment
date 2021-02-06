@@ -1,19 +1,15 @@
 package com.example.home_assignment_widgets;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
-import android.Manifest;
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RemoteViews;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ConfigRatesWidgetActivity extends AppCompatActivity {
 
@@ -22,7 +18,7 @@ public class ConfigRatesWidgetActivity extends AppCompatActivity {
     public static final String PREF_CRO = "cro_config";
     public static final String PREF_ETH = "etherium_config";
     public static final String PREF_MOB = "mob_config";
-    private EditText txtMob,txtBitcoin,txtCRO,txtEtherium;
+    private EditText txtMob, txtBitcoin, txtCRO, txtEtherium;
     private static int widgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     @Override
@@ -33,45 +29,46 @@ public class ConfigRatesWidgetActivity extends AppCompatActivity {
         Intent configIntent = getIntent();
         Bundle extras = configIntent.getExtras();
 
-        if(extras != null){
+        if (extras != null) {
             widgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
 
         Intent result = new Intent();
-        result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,widgetId);
+        result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
         setResult(RESULT_CANCELED, result);
 
-        if(widgetId == AppWidgetManager.INVALID_APPWIDGET_ID){
+        if (widgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
         }
-
+        // set location
         txtBitcoin = findViewById(R.id.editTextBitcoin);
         txtCRO = findViewById(R.id.editTextCRO);
         txtEtherium = findViewById(R.id.editTextEtherium);
         txtMob = findViewById(R.id.editTextMob);
     }
-    public void saveWidgetConfig(View v){
-      //  AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        Intent intent = new Intent(this,MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
 
-        String bitcoin =String.valueOf(txtBitcoin.getText());
-        String cro =String.valueOf(txtCRO.getText());
-        String eth =String.valueOf(txtEtherium.getText());
-        String mob =String.valueOf(txtMob.getText());
+    public void saveWidgetConfig(View v) {
+        //  AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        String bitcoin = String.valueOf(txtBitcoin.getText());
+        String cro = String.valueOf(txtCRO.getText());
+        String eth = String.valueOf(txtEtherium.getText());
+        String mob = String.valueOf(txtMob.getText());
 
         RemoteViews remoteViews = new RemoteViews(this.getPackageName(), R.layout.crypto_widget);
         remoteViews.setOnClickPendingIntent(R.id.btnConfig, pendingIntent);
-        SharedPreferences preferences = getSharedPreferences(SHARE_PREFS,MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(SHARE_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(PREF_BITCOIN+widgetId,bitcoin);
-        editor.putString(PREF_CRO+widgetId, cro);
-        editor.putString(PREF_ETH+widgetId,eth);
-        editor.putString(PREF_MOB+widgetId, mob);
+        editor.putString(PREF_BITCOIN + widgetId, bitcoin);
+        editor.putString(PREF_CRO + widgetId, cro);
+        editor.putString(PREF_ETH + widgetId, eth);
+        editor.putString(PREF_MOB + widgetId, mob);
         editor.apply();
 
         Intent result = new Intent();
-        result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,widgetId);
+        result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
         setResult(RESULT_OK, result);
 
         finish();

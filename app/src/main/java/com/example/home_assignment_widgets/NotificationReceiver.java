@@ -1,11 +1,10 @@
 package com.example.home_assignment_widgets;
 
-import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 
 import static com.example.home_assignment_widgets.ConfigRatesWidgetActivity.PREF_MOB;
 import static com.example.home_assignment_widgets.ConfigRatesWidgetActivity.SHARE_PREFS;
@@ -26,4 +25,5 @@ public class NotificationReceiver extends BroadcastReceiver {
             HelperClass.sendSms(mob,message);
         }
     }
+
 }
